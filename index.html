@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title>"Totallicks Chrome Ext."</title>
+
+  <link href="style.css" media="screen" rel="stylesheet" type="text/css">
+
+  <script type="text/javascript" src="../js/jquery.min.js"></script>
+  <script type="text/javascript" src="../js/tl.js"></script>
+  <script type="text/javascript" src="../js/mousetrap.min.js"></script>
+  <script type="text/javascript" src="../js/jquery.autocomplete.js"></script>
+  <script type="text/javascript" src="../js/spin.min.js"></script>
+</head>
+<body>
+  <header>
+    <a href="#" class="logo" title="Totallicks">
+      <img src="../images/icon_128.png" height="44px" weight="44px">
+      Totallicks
+    </a>
+    <a class="chrome-logo" href="#">
+      <img  src="images/chrome-small-logo.png">
+      Chrome
+    </a>
+  </header>
+  <div id="tl-search" class="search">
+    <input id="search" type="text" value="" name="q" class="mousetrap" placeholder="&#9835; Metallica - Enter Sandman" autofocus>
+    <input type="submit" value="Search">
+  </div>
+  <div style="clear: both;"></div>
+  <div id="suggestion-box"></div>
+  <div id="spinner"></div>
+  <!--<ul id="features" style="display: none;">-->
+    <!--<li><a href="http://totallicks.com/tabs/147/"><img src="http://userserve-ak.last.fm/serve/500/5955/Linkin+Park.jpg" alt="Linkin Park" /></a></li>-->
+    <!--<li><a href="http://totallicks.com/tabs/72/"><img src="http://userserve-ak.last.fm/serve/252/846545.jpg" alt="Metallica" /></a></li>-->
+    <!--<li><a href="http://totallicks.com/tabs/59/"><img src="http://userserve-ak.last.fm/serve/252/4396569.jpg" alt="Green Day" /></a></li>-->
+  <!--</ul>-->
+  <ul id="results"></ul>
+  <div style="clear: both;"></div>
+</body>
+</html>
