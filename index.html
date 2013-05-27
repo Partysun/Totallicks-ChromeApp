@@ -9,7 +9,6 @@
   <script type="text/javascript" src="../js/jquery.min.js"></script>
   <script type="text/javascript" src="../js/tl.js"></script>
   <script type="text/javascript" src="../js/mousetrap.min.js"></script>
-  <script type="text/javascript" src="../js/jquery.autocomplete.js"></script>
   <script type="text/javascript" src="../js/spin.min.js"></script>
 </head>
 <body>
@@ -24,17 +23,11 @@
     </a>
   </header>
   <div id="tl-search" class="search">
-    <input id="search" type="text" value="" name="q" class="mousetrap" placeholder="&#9835; Metallica - Enter Sandman" autofocus>
+    <input id="search" type="text" value="" name="q" class="mousetrap" autocomplete="off" spellcheck="false" placeholder="&#9835; Metallica - Enter Sandman" autofocus>
     <input type="submit" value="Search">
   </div>
   <div style="clear: both;"></div>
-  <div id="suggestion-box"></div>
   <div id="spinner"></div>
-  <!--<ul id="features" style="display: none;">-->
-    <!--<li><a href="http://totallicks.com/tabs/147/"><img src="http://userserve-ak.last.fm/serve/500/5955/Linkin+Park.jpg" alt="Linkin Park" /></a></li>-->
-    <!--<li><a href="http://totallicks.com/tabs/72/"><img src="http://userserve-ak.last.fm/serve/252/846545.jpg" alt="Metallica" /></a></li>-->
-    <!--<li><a href="http://totallicks.com/tabs/59/"><img src="http://userserve-ak.last.fm/serve/252/4396569.jpg" alt="Green Day" /></a></li>-->
-  <!--</ul>-->
   <ul id="results"></ul>
   <div style="clear: both;"></div>
 </body>

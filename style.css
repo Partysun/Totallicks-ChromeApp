@@ -40,7 +40,7 @@ body {
 #spinner {
   position: relative;
   margin: 0 auto;
-  top: 70px;
+  top: 50px;
   left: 236px;
 }
 
@@ -311,16 +311,13 @@ ul, li {
 /*}*/
 
 .over {
-  /*border-color: #9be0f9;*/
-  /*-webkit-box-shadow: 0 0 5px #A6E5FD;*/
-  /*box-shadow: 0 0 5px #A6E5FD;*/
   background-color: rgb(252, 249, 202);
 }
 
 .help {
   position: relative;
   padding: 5px 5px 5px 16px;
-  margin: 22px 10px 26px 10px;
+  margin: -3px 10px 26px 10px;
   color: #25494f;
   font-size: 13px;
   background: #e5f8fc;
@@ -419,7 +416,8 @@ footer {
 
 .message {
   font-size: 22px;
-  padding: 6px;
+  padding: 6px 0 0 8px;
+  margin-top: 4px;
   line-height: 36px;
   color: black;
 }

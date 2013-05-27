@@ -6,6 +6,7 @@
 
   init = function() {
     var input;
+    window.searchstatus = false;
     $("input:text:visible:first").focus();
     totallicks();
     $('.logo').on("click", function() {
@@ -43,33 +44,33 @@
           url: path
         });
       } else {
-        if ($('#search').val().length > 0 && window.searchstatus === false) {
-          input.autocomplete().disable();
+        if ($('#search').val().length > 1 && window.searchstatus === false) {
           return search();
         }
       }
     });
     Mousetrap.bind("down", function(e) {
+      if (window.indexLine === 1) {
+        $("#results li:nth-child(" + window.indexLine + ")").removeClass("over");
+      }
       if (window.indexLine >= 1 && window.indexLine <= $('#results li').length - 1) {
         $("#results li:nth-child(" + window.indexLine + ")").removeClass("over");
         ++window.indexLine;
         $("#results li:nth-child(" + window.indexLine + ")").addClass("over");
-        input.autocomplete().disable();
-        return $('.autocomplete-suggestions').hide();
+      }
+      if (e.target === input[0]) {
+        input.blur();
+        window.indexLine = 1;
+        return $("#results li:nth-child(" + window.indexLine + ")").addClass("over");
       }
     });
     Mousetrap.bind("up", function() {
       if (window.indexLine >= 1) {
-        $('.autocomplete-suggestions').hide();
-        input.autocomplete().disable();
         $("#results li:nth-child(" + window.indexLine + ")").removeClass("over");
         --window.indexLine;
         $("#results li:nth-child(" + window.indexLine + ")").addClass("over");
-        input.autocomplete().disable();
       }
       if (window.indexLine === 0) {
-        input.autocomplete().enable();
-        $('.autocomplete-suggestions').show();
         return input.focus();
       }
     });
@@ -112,8 +113,9 @@
       results.remove();
     }
     if (tabname === "") {
-      $('#results').append("<span class='message warning'>Ups. Write something please.</span>");
-      return $("input[type=text]").focus();
+      $('#results').append("<div class='message warning'>Ups. Write something please.</div>");
+      $("input[type=text]").focus();
+      return window.searchstatus = false;
     } else {
       spinner = new Spinner(opts).spin();
       spinerTarget.append(spinner.el);
@@ -127,8 +129,6 @@
         success: function(data) {
           var count, help, item, _i, _len, _ref;
           spinner.stop();
-          $("input[type=text]").autocomplete().disable();
-          $('.autocomplete-suggestions').hide();
           if (data["success"] && data["feed"].length > 0) {
             count = 1;
             _ref = data["feed"];
@@ -145,9 +145,8 @@
               $("<div class='help'>Use <span class='kbd'>↑</span> and <span class='kbd'>↓</span> to navigate, <span class='kbd'>enter</span> to view tabs <a href='#' id='dismiss' class='dismiss' title='Hide this notice forever' rel='nofollow'>&#10006;</a></div> ").insertBefore('#results');
             }
           } else {
-            $('#results').append("<span class='message warning'>No Results.</span>");
+            $('#results').append("<div class='message warning'>No Results.</div>");
             window.indexLine = 0;
-            $("input[type=text]").focus();
           }
           return window.searchstatus = false;
         }
@@ -156,20 +155,16 @@
   };
 
   totallicks = function() {
-    var a, input, options;
+    var handler, input;
     input = $("input[type=text]");
-    options = {
-      serviceUrl: "http://totallicks.com/songbook/suggestion/",
-      minChars: 2,
-      maxHeight: 400,
-      width: 480,
-      appendTo: $('#suggestion-box'),
-      onSelect: function(suggestion) {
-        input.autocomplete().disable();
-        return search();
+    handler = function(e) {
+      if (e.keyCode === 38 || e.keyCode === 40) {
+        return e.preventDefault();
       }
     };
-    a = input.autocomplete(options);
+    input.keydown(handler);
+    input.keypress(handler);
+    input.keypress(function(e) {});
     return $("input[type=submit]").click(function() {
       return search();
     });

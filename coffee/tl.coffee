@@ -1,6 +1,7 @@
 "use strict"
 
 init = ->
+  window.searchstatus = false
   $("input:text:visible:first").focus()
   totallicks()
   #$("#search").val localStorage.tabname
@@ -25,32 +26,25 @@ init = ->
        path = $('.over').find("a").attr('href')
        chrome.tabs.create({url: path})
     else
-      if $('#search').val().length > 0 && window.searchstatus == false
-        input.autocomplete().disable()
+      if $('#search').val().length > 1 && window.searchstatus == false
         search()
   Mousetrap.bind "down", (e) ->
+    if window.indexLine == 1
+      $("#results li:nth-child(#{window.indexLine})").removeClass "over"
     if window.indexLine >= 1 && window.indexLine <= $('#results li').length - 1
       $("#results li:nth-child(#{window.indexLine})").removeClass "over"
       ++window.indexLine
       $("#results li:nth-child(#{window.indexLine})").addClass "over"
-      input.autocomplete().disable()
-      $('.autocomplete-suggestions').hide()
-    #if e.target is input[0] && $('.autocomplete-suggestions').visibility == false
-      #input.blur()
-      #window.indexLine = 1
-      #$("#results li:nth-child(#{window.indexLine})").addClass "over"
-      #input.autocomplete().disable()
+    if e.target is input[0]
+      input.blur()
+      window.indexLine = 1
+      $("#results li:nth-child(#{window.indexLine})").addClass "over"
   Mousetrap.bind "up", ->
     if window.indexLine >= 1
-      $('.autocomplete-suggestions').hide()
-      input.autocomplete().disable()
       $("#results li:nth-child(#{window.indexLine})").removeClass "over"
       --window.indexLine
       $("#results li:nth-child(#{window.indexLine})").addClass "over"
-      input.autocomplete().disable()
     if window.indexLine == 0
-      input.autocomplete().enable()
-      $('.autocomplete-suggestions').show()
       input.focus()
   $(document).on "click", "#dismiss", ->
     $('.help').remove()
@@ -85,8 +79,9 @@ search = (tabname = $("#search").val()) ->
   if results.length > 0
     results.remove()
   if tabname == ""
-    $('#results').append "<span class='message warning'>Ups. Write something please.</span>"
+    $('#results').append "<div class='message warning'>Ups. Write something please.</div>"
     $("input[type=text]").focus()
+    window.searchstatus = false
   else
     spinner = new Spinner(opts).spin()
     spinerTarget.append spinner.el
@@ -99,8 +94,6 @@ search = (tabname = $("#search").val()) ->
 
       success: (data) ->
         spinner.stop()
-        $("input[type=text]").autocomplete().disable()
-        $('.autocomplete-suggestions').hide()
         if data["success"] && data["feed"].length > 0
           count = 1
           for item in data["feed"]
@@ -113,29 +106,32 @@ search = (tabname = $("#search").val()) ->
           if help == "true"
             $("<div class='help'>Use <span class='kbd'>↑</span> and <span class='kbd'>↓</span> to navigate, <span class='kbd'>enter</span> to view tabs <a href='#' id='dismiss' class='dismiss' title='Hide this notice forever' rel='nofollow'>&#10006;</a></div> ").insertBefore('#results')
         else
-          $('#results').append "<span class='message warning'>No Results.</span>"
+          $('#results').append "<div class='message warning'>No Results.</div>"
           window.indexLine = 0
-          $("input[type=text]").focus()
+          #$("input[type=text]").focus()
         window.searchstatus = false
 
 totallicks = ->
   #source: ["ozzy_osbourne_crazy_train.gp4", "ozzy_osbourne_crazy_train", "Ozzy Osbourne - Crazy Train","Ozzy Osbourne - Crazy Train","Ozzy Osbourne - Crazy Train"]
   input = $("input[type=text]")
-  options = {
-    serviceUrl: "http://totallicks.com/songbook/suggestion/"
-    #lookup: ['Metallica', 'Measure', 'Merlin Manson', 'Metroid', 'Melon']
-    minChars:2
-    maxHeight:400
-    width:480
-    appendTo: $('#suggestion-box')
-    onSelect: (suggestion) ->
-      input.autocomplete().disable()
-      search()
-  }
-  a = input.autocomplete(options)
-  #input.keypress (e) ->
-    ##input.autocomplete().enable()
-    #console.log $('.autocomplete-suggestions').height()
+  handler = (e) ->
+    if e.keyCode is 38 or e.keyCode is 40
+      #pos = @selectionStart
+      #@value = ((if e.keyCode is 38 then 1 else -1)) + parseInt(@value, 10)
+      #@selectionStart = pos
+      #@selectionEnd = pos
+      #ignoreKey = true
+      #setTimeout (->
+        #ignoreKey = false
+      #), 1
+      e.preventDefault()
+
+  input.keydown handler
+  input.keypress handler
+  input.keypress (e) ->
+    #setInterval(->
+      #search()
+    #, 300)
   $("input[type=submit]").click ->
     search()
 
