@@ -1,6 +1,6 @@
 {
   "name": "Totallicks",
-  "version": "0.5",
+  "version": "0.5.1",
   "manifest_version": 2,
   "description": "Find Tabs",
   "browser_action": {

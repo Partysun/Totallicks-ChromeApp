@@ -86,7 +86,7 @@ search = (tabname = $("#search").val()) ->
     spinner = new Spinner(opts).spin()
     spinerTarget.append spinner.el
     $.ajax
-      url: "http://totallicks.com/songbook/search/"
+      url: "http://totallicks.com/search/"
       type: "GET"
       dataType: "json"
       data:
